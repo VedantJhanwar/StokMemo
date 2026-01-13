@@ -204,16 +204,24 @@
       document.getElementById('setupKeyBtn').onclick = () => setupApiKey();
     }
 
-    // Global state for easy mode
-    let USER_API_KEY = localStorage.getItem('STOKMEMO_API_KEY') || '';
+    // OPTION: Paste your key here to make it work for everyone automatically.
+    // SECURITY: If you do this, go to Google AI Studio -> Get API Key -> Edit Key -> "API restrictions" -> "HTTP referrers" -> Add your website URL.
+    const HARDCODED_API_KEY = "AIzaSyAYZavXdZQZqBCYxmKlO39SLVYhJD0pszQ";
+
+    // Global state
+    let USER_API_KEY = HARDCODED_API_KEY || localStorage.getItem('STOKMEMO_API_KEY') || '';
 
     async function setupApiKey() {
+      if (HARDCODED_API_KEY) {
+        alert('The site owner has provided a free key for you. No setup needed!');
+        return;
+      }
       const newKey = prompt('Paste your Gemini API Key here (it will be saved only in your browser):', USER_API_KEY);
       if (newKey !== null) {
         USER_API_KEY = newKey.trim();
         localStorage.setItem('STOKMEMO_API_KEY', USER_API_KEY);
         alert('API Key saved! You can now generate memos without the server.');
-        location.reload(); // Reload to show updated status
+        location.reload();
       }
     }
 
