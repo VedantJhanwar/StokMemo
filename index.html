@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="StokMemo - Generate one-page, citation-backed investment memos in seconds. Search any public company and get a disciplined first look at the investment case.">
+  <title>StokMemo - Investment Memos in Seconds</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-container">
+      <div class="logo">
+        <div class="logo-icon">SM</div>
+        <span>StokMemo</span>
+      </div>
+      <a href="search.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">
+        Investment Memos in <span class="gradient-text">Seconds</span>, Not Hours
+      </h1>
+      <p class="hero-subtitle">
+        Generate citation-backed, one-page investment memos from company names alone.
+        Get a disciplined first look without the noise.
+      </p>
+      <div class="hero-cta">
+        <a href="search.html" class="btn btn-primary btn-lg">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Search Companies
+        </a>
+        <a href="#how-it-works" class="btn btn-ghost btn-lg"
+          onclick="Stock2Memo.scrollToElement('how-it-works'); return false;">
+          Learn How It Works
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem;">
+        Three Steps to <span class="gradient-text">Better Decisions</span>
+      </h2>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3 class="feature-title">1. Search</h3>
+          <p class="feature-description">
+            Type any public company name. No uploads, no documents, no complex prompts.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">2. Generate</h3>
+          <p class="feature-description">
+            Click once. Our system analyzes annual reports, earnings calls, and official filings.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <h3 class="feature-title">3. Decide</h3>
+          <p class="feature-description">
+            Read a structured, one-page memo. Determine if this is worth deeper analysis or a pass.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What You Get -->
+  <section class="section-lg" style="background: var(--color-bg-secondary);">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 3rem;">
+        What You <span class="gradient-text">Actually Get</span>
+      </h2>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Business Snapshot</h3>
+          <p class="feature-description">
+            4-6 factual bullets summarizing operations, financials, and business model. Every claim cited.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3 class="feature-title">Core Thesis</h3>
+          <p class="feature-description">
+            Exactly 3 reasons why this could work, backed by management commentary and disclosures.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <h3 class="feature-title">Key Risks</h3>
+          <p class="feature-description">
+            Exactly 5 risks explicitly stated by the company. No speculation, no generic platitudes.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3 class="feature-title">Valuation Check</h3>
+          <p class="feature-description">
+            High-level valuation context using relative language. No price targets, no forecasts.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Change Triggers</h3>
+          <p class="feature-description">
+            Exactly 3 concrete events or metrics that would change your view on the investment.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3 class="feature-title">Full Citations</h3>
+          <p class="feature-description">
+            Every claim includes source and section reference. No hallucinations, no guesswork.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What This Is NOT -->
+  <section class="section">
+    <div class="container container-md">
+      <h2 style="text-align: center; margin-bottom: 2rem;">
+        What StokMemo <span class="gradient-text">Is NOT</span>
+      </h2>
+
+      <div style="max-width: 600px; margin: 0 auto; color: var(--color-text-secondary); line-height: 1.8;">
+        <p style="margin-bottom: 1rem;">
+          <strong style="color: var(--color-text-primary);">Not investment advice.</strong>
+          This is a research tool for initial screening, not a recommendation to buy or sell.
+        </p>
+        <p style="margin-bottom: 1rem;">
+          <strong style="color: var(--color-text-primary);">Not a trading platform.</strong>
+          No real-time prices, no intraday data, no execution capabilities.
+        </p>
+        <p style="margin-bottom: 1rem;">
+          <strong style="color: var(--color-text-primary);">Not a price predictor.</strong>
+          We don't forecast stock prices or provide target valuations.
+        </p>
+        <p>
+          <strong style="color: var(--color-text-primary);">Not a replacement for due diligence.</strong>
+          This is a first draft to help you decide what deserves deeper analysis.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-lg" style="background: var(--color-bg-secondary);">
+    <div class="container" style="text-align: center;">
+      <h2 style="margin-bottom: 1.5rem;">
+        Ready to Make <span class="gradient-text">Smarter Decisions</span>?
+      </h2>
+      <p
+        style="font-size: var(--font-size-lg); color: var(--color-text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Stop spending hours on initial company research. Get a structured, citation-backed memo in seconds.
+      </p>
+      <a href="search.html" class="btn btn-primary btn-lg">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+        Start Analyzing Companies
+      </a>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section">
+    <div class="container container-lg">
+      <div class="disclaimer">
+        <div class="disclaimer-title">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd" />
+          </svg>
+          Important Disclaimer
+        </div>
+        <p class="disclaimer-text">
+          <strong>Not Investment Advice:</strong> StokMemo provides informational content only and does not constitute
+          investment advice, financial advice, trading advice, or any other type of advice. You should not make any
+          investment decisions based solely on the memos generated by this tool.
+        </p>
+        <p class="disclaimer-text">
+          <strong>No Guarantees:</strong> While we strive for accuracy by referencing public company disclosures, we
+          make no representations or warranties regarding the completeness, accuracy, or timeliness of any information
+          presented. Past performance does not guarantee future results.
+        </p>
+        <p class="disclaimer-text">
+          <strong>Do Your Own Research:</strong> Investment decisions should be made based on your own research, risk
+          tolerance, and financial situation. Consult with qualified financial advisors before making investment
+          decisions.
+        </p>
+        <p class="disclaimer-text">
+          <strong>Data Limitations:</strong> Memos are based on publicly available information and may not reflect the
+          most current developments. Real-time market data is not included.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="padding: 3rem 0; border-top: 1px solid var(--color-border); margin-top: 4rem;">
+    <div class="container"
+      style="text-align: center; color: var(--color-text-tertiary); font-size: var(--font-size-sm);">
+      <p>&copy; 2024 StokMemo. For informational purposes only.</p>
+      <p style="margin-top: 0.5rem;">Not investment advice. Do your own research.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>

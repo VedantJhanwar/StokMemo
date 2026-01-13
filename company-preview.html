@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Preview - StokMemo</title>
+  <meta name="description" content="Preview company information before generating investment memo">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/components.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Gemini AI SDK (Direct Browser Import) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+    </script>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">SM</span>
+        <span class="logo-text">StokMemo</span>
+      </a>
+      <div class="nav-links">
+        <a href="search.html">Search Companies</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container" style="padding-top: 6rem;">
+    <div id="companyPreview" style="max-width: 800px; margin: 0 auto;">
+      <!-- Content will be injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2024 StokMemo. Investment memos powered by AI.</p>
+      <p class="footer-disclaimer">Not investment advice. For informational purposes only.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/data.js"></script>
+
+  <!-- Inline Module Script (Required for file:// protocol) -->
+  <script type="module">
+    import { GoogleGenerativeAI } from '@google/generative-ai';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get company ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const companyId = urlParams.get('id');
+
+      if (!companyId) {
+        window.location.href = 'search.html';
+        return;
+      }
+
+      // Get company data (from data.js global)
+      // Retry a few times if data.js is slow to load
+      const checkData = setInterval(() => {
+        if (typeof getCompany === 'function') {
+          clearInterval(checkData);
+          const company = getCompany(companyId);
+          if (!company) {
+            window.location.href = 'search.html';
+            return;
+          }
+          displayCompanyPreview(company);
+        }
+      }, 50);
+
+      // Timeout failsafe
+      setTimeout(() => clearInterval(checkData), 2000);
+    });
+
+    function displayCompanyPreview(company) {
+      const container = document.getElementById('companyPreview');
+
+      container.innerHTML = `
+            <div class="animate-fadeIn">
+              <!-- Company Header Card -->
+              <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 3rem; margin-bottom: 2rem; backdrop-filter: blur(10px);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                  <div style="font-size: 72px; margin-bottom: 1rem;">${company.logo}</div>
+                  <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    ${company.name}
+                  </h1>
+                  <div style="display: flex; gap: 1.5rem; justify-content: center; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
+                    <span style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary); font-size: var(--font-size-lg);">
+                      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                      </svg>
+                      ${company.ticker}
+                    </span>
+                    <span style="color: var(--color-text-tertiary);">•</span>
+                    <span style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary); font-size: var(--font-size-lg);">
+                      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                      </svg>
+                      ${company.sector}
+                    </span>
+                    <span style="color: var(--color-text-tertiary);">•</span>
+                    <span style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary); font-size: var(--font-size-lg);">
+                      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      ${company.exchange || 'Stock Exchange'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- What You'll Get Section -->
+              <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-xl); padding: 2.5rem; margin-bottom: 2rem; backdrop-filter: blur(10px);">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--color-text-primary);">
+                  📋 What You'll Get
+                </h2>
+                <div style="display: grid; gap: 1rem;">
+                  <div style="display: flex; gap: 1rem; align-items: start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; font-size: 0.875rem;">1</div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.25rem;">Business Snapshot</div>
+                      <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">Key facts about operations, revenue, and market position</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; font-size: 0.875rem;">2</div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.25rem;">Core Investment Thesis</div>
+                      <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">Why this investment could work - key opportunities</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; font-size: 0.875rem;">3</div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.25rem;">Key Risks</div>
+                      <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">Material risks and challenges facing the business</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; font-size: 0.875rem;">4</div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.25rem;">Valuation Sanity Check</div>
+                      <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">High-level valuation perspective vs peers</div>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 1rem; align-items: start;">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-secondary)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 600; font-size: 0.875rem;">5</div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.25rem;">What Would Change the View</div>
+                      <div style="color: var(--color-text-secondary); font-size: var(--font-size-sm);">Specific triggers that would alter the investment case</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Generate Button -->
+              <div style="text-align: center; margin-top: 3rem;">
+                <button id="generateBtn" class="btn btn-primary btn-large" style="font-size: 1.125rem; padding: 1rem 3rem; width: 100%; max-width: 400px;">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 0.5rem;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Generate Investment Memo
+                </button>
+                <div style="margin-top: 1rem;">
+                  <a href="search.html" style="color: var(--color-text-secondary); font-size: var(--font-size-sm); text-decoration: none; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    ← Back to search
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Easy Mode Settings -->
+              <div id="easyModeSettings" style="margin-top: 4rem; padding: 2rem; background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); border-radius: var(--radius-lg); text-align: center;">
+                <h3 style="font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 0.5rem;">✨ Easy Mode (No Server Needed)</h3>
+                <p style="font-size: 0.875rem; color: var(--color-text-tertiary); margin-bottom: 1.5rem;">Running directly from your browser. No black windows required.</p>
+                <div id="apiKeySection">
+                    <button id="setupKeyBtn" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">Change API Key</button>
+                    ${localStorage.getItem('STOKMEMO_API_KEY') ? '<span style="color: #4ade80; font-size: 0.75rem; margin-left: 0.5rem;">(Key Saved)</span>' : ''}
+                </div>
+              </div>
+            </div>
+          `;
+
+      // Re-attach event listeners after direct HTML injection
+      document.getElementById('generateBtn').onclick = () => generateMemo(company);
+      document.getElementById('setupKeyBtn').onclick = () => setupApiKey();
+    }
+
+    // Global state for easy mode
+    let USER_API_KEY = localStorage.getItem('STOKMEMO_API_KEY') || '';
+
+    async function setupApiKey() {
+      const newKey = prompt('Paste your Gemini API Key here (it will be saved only in your browser):', USER_API_KEY);
+      if (newKey !== null) {
+        USER_API_KEY = newKey.trim();
+        localStorage.setItem('STOKMEMO_API_KEY', USER_API_KEY);
+        alert('API Key saved! You can now generate memos without the server.');
+        location.reload(); // Reload to show updated status
+      }
+    }
+
+    async function generateMemo(company) {
+      const generateBtn = document.getElementById('generateBtn');
+      const originalHTML = generateBtn.innerHTML;
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<div class="spinner" style="width: 24px; height: 24px; border-width: 2px; margin: 0 auto;"></div>';
+
+      // Step 2: Easy Mode (Direct Browser Generation)
+      if (!USER_API_KEY) {
+        alert('⚠️ AI SETUP REQUIRED\n\nPlease click "Change API Key" at the bottom to paste your key directly.');
+        generateBtn.innerHTML = originalHTML;
+        generateBtn.disabled = false;
+        return;
+      }
+
+      let statusText; // Declare outside try scope
+
+      try {
+        const genAI = new GoogleGenerativeAI(USER_API_KEY);
+        // Using confirmed available models from user diagnosis
+        const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.5-pro'];
+        let text = '';
+        let errorLog = [];
+
+        statusText = document.createElement('div');
+        statusText.style.marginTop = '15px';
+        statusText.style.fontSize = '14px';
+        statusText.style.fontWeight = 'bold';
+        statusText.style.color = '#238636'; // GitHub Green
+        statusText.style.textAlign = 'center';
+        generateBtn.parentNode.appendChild(statusText);
+
+        let startTime = Date.now();
+        const timerInterval = setInterval(() => {
+          const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+          statusText.innerText = `Generating Analysis... ${elapsed}s`;
+        }, 100);
+
+        for (const modelName of modelsToTry) {
+          // Retry logic for 429 errors
+          for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+              if (attempt > 0) {
+                statusText.innerText = `Rate limit hit. Cooling down (10s)...`;
+                await new Promise(r => setTimeout(r, 10000));
+              }
+
+              statusText.innerText = `Attempting with ${modelName.replace('gemini-', '')}...`;
+              console.log(`🤖 Easy Mode: Trying model ${modelName} (Attempt ${attempt + 1})...`);
+
+              const model = genAI.getGenerativeModel({ model: modelName });
+              const prompt = getMemoPrompt(company);
+
+              // Increased timeout for Deep Research (60s)
+              const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Request timed out (>60s)')), 60000)
+              );
+
+              const result = await Promise.race([
+                model.generateContent(prompt),
+                timeoutPromise
+              ]);
+
+              text = result.response.text();
+              clearInterval(timerInterval); // Stop timer on success
+              break; // Break retry loop
+            } catch (err) {
+              console.warn(`Model ${modelName} failed (Attempt ${attempt + 1}):`, err);
+
+              // Only retry if it's a 429 (Rate Limit)
+              if (err.message.includes('429') && attempt === 0) {
+                console.log('Hit 429, retrying after delay...');
+                continue; // usage of continue to retry
+              }
+
+              if (attempt === 0) errorLog.push(`${modelName}: ${err.message}`);
+              break; // Break retry loop for non-429 errors
+            }
+          }
+          if (text) break; // Break model loop if success
+        }
+
+        if (timerInterval) clearInterval(timerInterval);
+
+        if (!text) {
+          // Failure case
+          const allErrors = errorLog.join('\n');
+          throw new Error(`All models failed:\n${allErrors}`);
+        }
+
+        // Success case
+        statusText.style.color = '#238636';
+        statusText.innerText = 'Success! Redirecting...';
+
+        // Clean and parse JSON
+        text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        const memo = JSON.parse(text);
+
+        processMemoResult(company, memo, false);
+
+      } catch (error) {
+        console.error('Easy Mode Error:', error);
+
+        // Update status text on failure
+        if (statusText) {
+          statusText.style.color = '#cf222e';
+
+          // Show the actual error log first!
+          let errorMsg = error.message || error.toString();
+          // Clean up the "All models failed" prefix if present
+          if (errorMsg.includes('All models failed:')) {
+            errorMsg = errorMsg.replace('All models failed:', '').trim();
+          }
+
+          statusText.innerHTML = `<strong>Generation Failed:</strong><br><pre style="white-space: pre-wrap; font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.5rem;">${errorMsg}</pre><br>Running diagnosis...`;
+
+          // Auto-run diagnosis ONLY if it's a 403 or 404 (Access Issue)
+          if (errorMsg.includes('403') || errorMsg.includes('404') || errorMsg.includes('found')) {
+            try {
+              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${USER_API_KEY}`);
+              const data = await response.json();
+
+              if (data.models) {
+                const availableNames = data.models
+                  .map(m => m.name.replace('models/', ''))
+                  .filter(n => n.includes('gemini'));
+
+                statusText.innerHTML += `<br><strong>Key Valid. Available Models:</strong><br>${availableNames.join(', ')}`;
+              }
+            } catch (e) {
+              // Ignore diag errors
+            }
+          }
+        }
+
+        // Create a detailed error report for debugging
+        const technicalError = `\n\n--- TECHNICAL DETAILS ---\n${error.toString()}\n${JSON.stringify(error, null, 2)}`;
+
+        // Handle Quota/Rate Limit Errors
+        if (error.message.includes('429') || error.message.includes('quota')) {
+          friendlyMessage = "⚠️ YOU ARE GOING TOO FAST!\n\nGoogle's free AI has a speed limit. Please wait 1-2 minutes and try again.\n\n(Good news: Your setup is working perfectly!)";
+        } else if (error.message.includes('503')) {
+          friendlyMessage = "⚠️ AI IS OVERLOADED\n\nGoogle's servers are busy. Please try again in 30 seconds.";
+        } else {
+          friendlyMessage = `⚠️ GENERATION FAILED\n\n${error.message}\n\nCheck your internet connection.`;
+        }
+
+        // Show both friendly message AND technical details
+        alert(friendlyMessage + technicalError);
+        console.error("Full error details:", error);
+
+        generateBtn.innerHTML = originalHTML;
+        generateBtn.disabled = false;
+      }
+    }
+
+    function processMemoResult(company, memo, isDemo) {
+      sessionStorage.setItem('currentMemo', JSON.stringify({
+        company: {
+          name: company.name,
+          ticker: company.ticker,
+          sector: company.sector,
+          exchange: company.exchange,
+          logo: company.logo
+        },
+        memo: memo,
+        generated: new Date().toISOString(),
+        isDemo: isDemo
+      }));
+      window.location.href = 'memo.html';
+    }
+
+    function getMemoPrompt(company) {
+      return `
+====================================================================
+ANTI GRAVITY — DEEP INVESTOR-GRADE RESEARCH REPORT
+PRODUCT: STOKMEMO (ADVANCED REPORT MODE)
+TARGET: ${company.name} (${company.ticker})
+====================================================================
+
+ROLE:
+You are a senior buy-side investment analyst with 20+ years of experience covering public equities, capital allocation, and business strategy. You prioritize clarity, evidence, and decision usefulness.
+
+OBJECTIVE:
+Generate an INVESTOR-GRADE RESEARCH REPORT. This is NOT a summary. It is a deep-dive to support serious investment evaluation.
+
+--------------------------------------------------------------------
+REQUIRED JSON OUTPUT STRUCTURE
+--------------------------------------------------------------------
+You MUST output valid JSON only. No markdown formatting outside the string values.
+
+{
+  "businessModel": {
+    "summary": "How they make money (2-3 sentences)",
+    "segments": [
+      {"name": "Segment A", "details": "Role/Economics"},
+      {"name": "Segment B", "details": "Role/Economics"}
+    ],
+    "economics": "Cost structure and profitability drivers"
+  },
+  "industry": {
+    "structure": "Industry structure and value chain position",
+    "moat": "Competitive advantages (or lack thereof)",
+    "pricingPower": "Low/Medium/High and why"
+  },
+  "performance": {
+    "trend": "Directional trends (growth, margins, efficiency)",
+    "execution": "Management execution track record"
+  },
+  "management": {
+    "priorities": "Stated priorities vs actions",
+    "allocation": "Capital allocation choices (capex, buybacks, M&A)"
+  },
+  "risks": [
+    {"type": "Structural", "detail": "Deep business risk...", "severity": "High"},
+    {"type": "Execution", "detail": "Operational risk...", "severity": "Medium"}
+  ],
+  "valuation": {
+    "assessment": "Overvalued / Fair / Undervalued",
+    "reasoning": "Relative positioning and embedded expectations",
+    "score": 0 to 100 (0=Extremely Expensive, 50=Fair, 100=Screaming Buy)
+  },
+  "missingData": [
+    "Metric or data point missing 1",
+    "Metric or data point missing 2"
+  ],
+  "decision": {
+    "verdict": "Yes / No / Conditional",
+    "pros": ["Pro 1", "Pro 2"],
+    "cons": ["Con 1", "Con 2"]
+  }
+}
+
+--------------------------------------------------------------------
+RESEARCH GUIDELINES
+--------------------------------------------------------------------
+1. BUSINESS MODEL: Focus on unit economics and cash flow drivers.
+2. INDUSTRY: Assess real competitive advantage, not just market share.
+3. MANAGEMENT: Judge by actions (capital allocation), not just words.
+4. VALUATION: No price targets. assessing relative value and expectations.
+5. DATA GAPS: Be honest about what you don't know.
+
+CRITICAL RULES:
+- Cite sources for factual claims where possible.
+- Professional, analytical tone. No hype.
+- JSON ONLY. Do not wrap in markdown code blocks.
+`;
+    }
+
+  </script>
+</body>
+
+</html>

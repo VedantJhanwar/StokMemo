@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="View your generated investment memo with full citations from company disclosures.">
+    <title>Investment Memo - StokMemo</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/components.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">SM</div>
+                <span>StokMemo</span>
+            </a>
+            <a href="search.html" class="btn btn-ghost">← Back to Search</a>
+        </div>
+    </nav>
+
+    <!-- Memo Content -->
+    <section class="section-lg">
+        <div class="container">
+            <div id="memoContent">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Section -->
+    <section style="padding: 3rem 0; background: var(--color-bg-secondary); margin-top: 4rem;">
+        <div class="container container-lg">
+            <div
+                style="max-width: 800px; margin: 0 auto; padding: 2rem; background: rgba(248, 113, 113, 0.05); border: 1px solid rgba(248, 113, 113, 0.2); border-radius: var(--radius-xl);">
+                <h3
+                    style="font-size: var(--font-size-lg); margin-bottom: 1rem; color: var(--color-error); display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Critical Disclaimer
+                </h3>
+                <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.8;">
+                    <p style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--color-text-primary);">This is NOT investment advice.</strong>
+                        This memo is generated for informational and research purposes only. It does not constitute a
+                        recommendation to buy, sell, or hold any security.
+                    </p>
+                    <p style="margin-bottom: 0.75rem;">
+                        <strong style="color: var(--color-text-primary);">No warranties.</strong>
+                        While based on public company disclosures, accuracy and completeness are not guaranteed.
+                        Information may be outdated or incomplete.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        <strong style="color: var(--color-text-primary);">Consult professionals.</strong>
+                        Make investment decisions only after conducting your own research and consulting with qualified
+                        financial advisors who understand your specific situation and risk tolerance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 3rem 0; border-top: 1px solid var(--color-border);">
+        <div class="container"
+            style="text-align: center; color: var(--color-text-tertiary); font-size: var(--font-size-sm);">
+            <p>&copy; 2024 StokMemo. For informational purposes only.</p>
+            <p style="margin-top: 0.5rem;">Not investment advice. Do your own research.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/memo.js"></script>
+</body>
+
+</html>
